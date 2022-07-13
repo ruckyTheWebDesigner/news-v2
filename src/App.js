@@ -1,24 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Routes, Route, Link, BrowserRouter as Router } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import { BsSun, BsFillMoonFill } from "react-icons/bs";
+
+const localTheme = localStorage.getItem("theme");
 
 function App() {
+  const [mode, setmode] = useState(localTheme || "light");
+
+  const bodybg = document.querySelector("body");
+  const htmlbg = document.querySelector("html");
+
+  const toogleMode = () => {
+    if (mode === "light") {
+      setmode("dark");
+      bodybg.style.backgroundColor = "#1a1a1a";
+      bodybg.style.color = "#fff";
+      // htmlbg.style.backgroundColor = "#1a1a1a";
+      localStorage.setItem("theme", "dark");
+    } else {
+      setmode("light");
+      bodybg.style.backgroundColor = "#fafafa";
+      bodybg.style.color = "#000";
+      localStorage.setItem("theme", "light");
+    }
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode: mode === "light" ? "light" : "dark",
+    },
+  });
+
+  useEffect(() => {
+    toogleMode();
+    // localStorage.setItem("darkMode", darkMode);
+    console.log(localStorage.getItem("theme"));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <HomePage
+                button={
+                  <button onClick={toogleMode}>
+                    {mode === "light" ? <BsSun /> : <BsFillMoonFill />}
+                  </button>
+                }
+              />
+            }
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

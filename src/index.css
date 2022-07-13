@@ -1,13 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color: black; */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.divider {
+  margin: 15px 0 !important;
+}
+
+h6 {
+  margin: 5px auto !important;
+}
+
+li {
+  font-size: 14px;
+  line-height: 1.43;
+}
+
+p {
+  font-size: 12px;
+  line-height: 1.43;
+  /* font-weight: 600; */
+}
+
+h3 {
+  font-size: 18px !important;
+  line-height: 1.43;
+  font-weight: 600;
+}
+
+.dark {
+  background-color: #121212;
+  color: white !important;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.feed {
+  flex: 4;
+}
+
+.rightbar {
+  flex: 2;
+}
+
+.navbar-iframe {
+  width: 100% !important;
+}
+
+.switch-button {
+  margin-left: 40px !important;
+}
+
+.news-content {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 20px !important;
+  row-gap: 5px !important;
+}
+
+.news-photo {
+  margin: 30px 0 !important;
+  border-radius: 5px !important;
+}
+
+.card-news {
+  padding: 10px 25px;
+  margin-bottom: 15px;
+}
+
+.home-body {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  margin: 50px 0 !important;
+}
+
+.bottom-appbar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  overflow-x: scroll !important;
+}
+
+.bottom-appbar h3:hover {
+  cursor: pointer;
+}
+
+.bottom-appbar h3:active {
+  background-color: #f5f5f5;
+  transition: 0.2s;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
+}
+
+.rssapp-list[style] {
+  background-color: white !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .rightbar {
+    display: none;
+  }
+
+  .css-1orzy9s {
+    width: 50% !important;
+  }
+
+  .iframe {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+
+  .bottom-appbar {
+    justify-content: space-between !important;
+  }
+
+  .bottom-appbar > h3 {
+    margin-left: 15px !important;
+    font-size: 14px !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .rightbar,
+  .sidebar {
+    display: block;
+    height: 100% !important;
+  }
+
+  .bottom-appbar > h3 {
+    font-size: 16px !important;
+  }
+
+  .bottom-appbar {
+    justify-content: space-around !important;
+  }
+
+  .css-1orzy9s {
+    width: 30% !important;
+  }
 }
