@@ -33,11 +33,7 @@ function App() {
     },
   });
 
-  useEffect(() => {
-    toogleMode();
-    // localStorage.setItem("darkMode", darkMode);
-    console.log(localStorage.getItem("theme"));
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ThemeProvider theme={theme}>

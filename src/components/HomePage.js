@@ -95,8 +95,7 @@ function HomePage(props) {
   };
 
   useEffect(() => {
-    // fetchData();
-    // fetchNews();
+    fetchData(1);
   }, []);
 
   return (
