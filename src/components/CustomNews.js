@@ -7,7 +7,7 @@ function CustomNews() {
       <div>
         <a class='block my-3 overflow-hidden rounded-lg shadow-sm' href='/#'>
           <div class='p-4'>
-            <h4>Breaking News</h4>
+            <h1 className='text-xl mb-3 font-bold'>Breaking News</h1>
             <img
               class='object-full w-full h-56 rounded-md'
               src='https://www.hyperui.dev/photos/team-1.jpeg'
@@ -16,7 +16,7 @@ function CustomNews() {
           </div>
 
           <div class='p-6'>
-            <h1 class='text-2xl font-bold'>
+            <h1 className='text-2xl font-bold'>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </h1>
 
