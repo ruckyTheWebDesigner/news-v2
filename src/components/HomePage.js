@@ -89,7 +89,7 @@ function HomePage(props) {
     );
     const data = await response.json();
 
-    setData(data.articles);
+    await setData(data.articles);
   };
 
   const handleChange = (event, value) => {
@@ -100,7 +100,7 @@ function HomePage(props) {
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
     fetchData(1);
-  }, []);
+  }, [fetchData]);
 
   return (
     <>
