@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Routes, Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import { BsSun, BsFillMoonFill } from "react-icons/bs";
 
@@ -10,7 +10,6 @@ function App() {
   const [mode, setmode] = useState(localTheme || "light");
 
   const bodybg = document.querySelector("body");
-  const htmlbg = document.querySelector("html");
 
   const toogleMode = () => {
     if (mode === "light") {

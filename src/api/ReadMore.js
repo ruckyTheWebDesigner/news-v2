@@ -12,7 +12,7 @@ const ReadMore = ({ children }) => {
 
       <div
         onClick={toggleReadMore}
-        class='inline-block mt-4 font-medium text-blue-600 '>
+        className='inline-block mt-4 font-medium text-blue-600 '>
         {isReadMore ? (
           <>Read More</>
         ) : (

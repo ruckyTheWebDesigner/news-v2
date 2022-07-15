@@ -6,7 +6,7 @@ function BottomAppbar(props) {
   return (
     <Stack
       direction='row'
-      className='bottom-appbar my-5 py-2'
+      className='bottom-appbar my-5 py-4'
       divider={<Divider orientation='vertical' flexItem />}
       spacing={3}>
       {props.select1}

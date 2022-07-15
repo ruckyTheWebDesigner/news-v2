@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { BsSun, BsFillMoonFill } from "react-icons/bs";
 
 function News() {
   return (

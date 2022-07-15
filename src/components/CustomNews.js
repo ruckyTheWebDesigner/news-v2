@@ -5,17 +5,17 @@ function CustomNews() {
   return (
     <div className='news-content mb-5 dark:bg-grey600'>
       <div>
-        <a class='block my-3 overflow-hidden rounded-lg shadow-sm' href='/#'>
-          <div class='p-4'>
+        <a className='block overflow-hidden rounded-lg shadow-sm' href='/#'>
+          <div className='p-4'>
             <h1 className='text-xl mb-3 font-bold'>Breaking News</h1>
             <img
-              class='object-full w-full h-56 rounded-md'
+              className='object-full w-full h-56 rounded-md'
               src='https://www.hyperui.dev/photos/team-1.jpeg'
               alt=''
             />
           </div>
 
-          <div class='p-6'>
+          <div className='p-6'>
             <h1 className='text-2xl font-bold'>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </h1>
@@ -39,7 +39,7 @@ function CustomNews() {
           height='100%'
           src='https://rss.app/embed/v1/list/tTpQh2O1yxC2nCXB'
           title='news'
-          frameborder='0'></iframe>
+          frameBorder='0'></iframe>
       </div>
     </div>
   );

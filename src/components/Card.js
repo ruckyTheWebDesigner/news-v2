@@ -36,7 +36,7 @@ export default function ImgMediaCard(props) {
         <div>
           <Divider className='divider' />
           <li>{props.description}</li>
-          <div class='inline-block pb-1 mt-4 font-medium text-blue-600 '>
+          <div className='inline-block pb-1 mt-4 font-medium text-blue-600 '>
             Read more
             <span aria-hidden='true'>&rarr;</span>
           </div>
