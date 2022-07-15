@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "./Navbar";
 import Rightbar from "./Rightbar";
 import Sidebar from "./Sidebar";
@@ -62,25 +62,27 @@ function HomePage(props) {
 
   let pagesize = 10;
 
-  const fetchData = async (no) => {
-    const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
-    const country = "us";
-    const category = "general";
-    const pageSize = pagesize;
-    const pageNo = no;
+  const fetchData = useCallback(
+    async (no) => {
+      const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
+      const country = "us";
+      const category = "general";
+      const pageSize = pagesize;
+      const pageNo = no;
 
-    const response = await fetch(
-      `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${pageNo}&apiKey=${apiKey}`
-    );
-    const data = await response.json();
-    // console.log(data);
-    setData(data.articles);
-  };
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${pageNo}&apiKey=${apiKey}`
+      );
+      const data = await response.json();
+
+      setData(data.articles);
+    },
+    [pagesize]
+  );
 
   const fetchQuery = async (query) => {
     const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
     const queryString = query;
-    // const Date = new Date();
     const pageSize = pagesize;
     const pageNo = 1;
 
@@ -92,7 +94,7 @@ function HomePage(props) {
     await setData(data.articles);
   };
 
-  const handleChange = (event, value) => {
+  const handleChange = (_event, value) => {
     setPage(value);
     fetchData(value);
   };
