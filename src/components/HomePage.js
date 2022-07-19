@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Rightbar from "./Rightbar";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import { Box, Pagination, Stack, Typography } from "@mui/material";
+import { Box, debounce, Pagination, Stack, Typography } from "@mui/material";
 import Card from "./Card";
 import { styled, alpha } from "@mui/material/styles";
 import BottomAppbar from "./BottomAppbar";
@@ -12,6 +12,8 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import CustomNews from "./CustomNews";
 import Loading from "./Loading";
+
+import { useQuery } from "react-query";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,53 +58,43 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function HomePage(props) {
-  const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("general");
 
-  let pagesize = 10;
+  const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
+  const pageSize = 10;
+  const searchQuery = query ? query : "general";
 
-  const fetchData = useCallback(
-    async (no) => {
-      const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
-      const country = "us";
-      const category = "general";
-      const pageSize = pagesize;
-      const pageNo = no;
-
-      const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&pageSize=${pageSize}&page=${pageNo}&apiKey=${apiKey}`
-      );
-      const data = await response.json();
-
-      setData(data.articles);
-    },
-    [pagesize]
+  const userQuery = useQuery(
+    [
+      "users",
+      {
+        page,
+        searchQuery,
+      },
+    ],
+    () =>
+      fetch(
+        `https://newsapi.org/v2/everything?q=${searchQuery}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
+      ).then((res) => res.json())
   );
 
-  const fetchQuery = async (query) => {
-    const apiKey = "c6af1a17c8a24814bd3f48f11408de46";
-    const queryString = query;
-    const pageSize = pagesize;
-    const pageNo = 1;
-
-    const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${queryString}&from=2022-07-01&sortBy=popularity&pageSize=${pageSize}&page=${pageNo}&apiKey=${apiKey}`
-    );
-    const data = await response.json();
-
-    await setData(data.articles);
-  };
+  console.log(userQuery.data);
 
   const handleChange = (_event, value) => {
     setPage(value);
-    fetchData(value);
+    console.log(value);
   };
 
+  const handleSearch = debounce((event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+  }, 1000);
+
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-    fetchData(1);
-  }, [fetchData]);
+    setTimeout(() => setLoading(false), 100);
+  }, []);
 
   return (
     <>
@@ -112,7 +104,7 @@ function HomePage(props) {
         <>
           <Navbar
             search={
-              <Search>
+              <Search onChange={handleSearch}>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
@@ -126,18 +118,16 @@ function HomePage(props) {
           />
           <BottomAppbar
             select1={
-              <h3 className='' onClick={() => fetchQuery("Headlines")}>
+              <h3 className='' onClick={() => setQuery("headlines")}>
                 Headlines
               </h3>
             }
-            select2={<h3 onClick={() => fetchQuery("business")}>Business</h3>}
-            select3={
-              <h3 onClick={() => fetchQuery("Technology")}>Technology</h3>
-            }
+            select2={<h3 onClick={() => setQuery("business")}>Business</h3>}
+            select3={<h3 onClick={() => setQuery("technology")}>Technology</h3>}
             select4={
-              <h3 onClick={() => fetchQuery("entertainment")}>Entertainment</h3>
+              <h3 onClick={() => setQuery("entertainment")}>Entertainment</h3>
             }
-            select5={<h3 onClick={() => fetchQuery("Sports")}>Sports</h3>}
+            select5={<h3 onClick={() => setQuery("sports")}>Sports</h3>}
           />
           <div className='home-body'>
             <Sidebar />
@@ -145,27 +135,38 @@ function HomePage(props) {
             <div>
               <CustomNews />
               <Box className='news-content'>
-                {data.map((item, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      className='card-news'
-                      source={item.source.name}
-                      author={item.author}
-                      title={item.title}
-                      publishedAt={item.publishedAt}
-                      image={item.urlToImage}
-                      description={item.description}
-                      content={item.content}
-                      url={item.url}
-                    />
-                  );
-                })}
+                {userQuery.isLoading || userQuery.isError ? (
+                  <p className='text-center text-bold'>
+                    Loading..........................
+                  </p>
+                ) : (
+                  userQuery.data.articles.map((article, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        title={article.title}
+                        source={article.source.name}
+                        author={article.author}
+                        content={article.content}
+                        description={article.description}
+                        url={article.url}
+                        image={article.urlToImage}
+                        publishedAt={article.publishedAt}
+                      />
+                    );
+                  })
+                )}
 
                 <Stack spacing={2} justifyContent='center' alignItems='center'>
                   <Typography>Page: {page}</Typography>
                   <Pagination
-                    count={Math.ceil(data.length / 2)}
+                    count={
+                      userQuery.isLoading ||
+                      userQuery.isError ||
+                      userQuery.data === undefined
+                        ? 0
+                        : Math.floor(userQuery.data.totalResults / 1000)
+                    }
                     page={page}
                     onChange={handleChange}
                   />
