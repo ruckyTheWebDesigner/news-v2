@@ -76,21 +76,31 @@ function HomePage(props) {
     ],
     () =>
       fetch(
-        `https://newsapi.org/v2/everything?q=${searchQuery}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
+        `https://newsapi.org/v2/everything?q=${searchQuery}&sortBy=publishedAt&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`
       ).then((res) => res.json())
   );
 
-  console.log(userQuery.data);
-
   const handleChange = (_event, value) => {
     setPage(value);
-    console.log(value);
+    scrollToSection();
   };
 
   const handleSearch = debounce((event) => {
     event.preventDefault();
-    console.log(event.target.value);
   }, 1000);
+
+  const scrollToSection = () => {
+    const element = document.getElementById("news-card");
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  };
+
+  function selectQuery(id) {
+    setQuery(id);
+    scrollToSection();
+  }
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 100);
@@ -118,16 +128,20 @@ function HomePage(props) {
           />
           <BottomAppbar
             select1={
-              <h3 className='' onClick={() => setQuery("headlines")}>
-                Headlines
+              <h3 className='' onClick={() => selectQuery("general")}>
+                General
               </h3>
             }
-            select2={<h3 onClick={() => setQuery("business")}>Business</h3>}
-            select3={<h3 onClick={() => setQuery("technology")}>Technology</h3>}
-            select4={
-              <h3 onClick={() => setQuery("entertainment")}>Entertainment</h3>
+            select2={<h3 onClick={() => selectQuery("business")}>Business</h3>}
+            select3={
+              <h3 onClick={() => selectQuery("technology")}>Technology</h3>
             }
-            select5={<h3 onClick={() => setQuery("sports")}>Sports</h3>}
+            select4={
+              <h3 onClick={() => selectQuery("entertainment")}>
+                Entertainment
+              </h3>
+            }
+            select5={<h3 onClick={() => selectQuery("sports")}>Sports</h3>}
           />
           <div className='home-body'>
             <Sidebar />
@@ -135,10 +149,13 @@ function HomePage(props) {
             <div>
               <CustomNews />
               <Box className='news-content'>
-                {userQuery.isLoading || userQuery.isError ? (
-                  <p className='text-center text-bold'>
-                    Loading..........................
-                  </p>
+                {userQuery.isError ? (
+                  <h4 className='text-center text-bold'>
+                    Error fetching news.
+                  </h4>
+                ) : null}
+                {userQuery.isLoading ? (
+                  <h4 className='text-center text-bold'>Loading news...</h4>
                 ) : (
                   userQuery.data.articles.map((article, index) => {
                     return (

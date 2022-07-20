@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React, { useState } from "react";
+import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import { BsSun, BsFillMoonFill } from "react-icons/bs";
@@ -7,35 +7,28 @@ import { BsSun, BsFillMoonFill } from "react-icons/bs";
 const localTheme = localStorage.getItem("theme");
 
 function App() {
-  const [mode, setmode] = useState(localTheme || "light");
-
-  const bodybg = document.querySelector("body");
+  const [mode, setmode] = useState(localTheme);
 
   const toogleMode = () => {
     if (mode === "light") {
       setmode("dark");
-      bodybg.style.backgroundColor = "#1a1a1a";
-      bodybg.style.color = "#fff";
-      // htmlbg.style.backgroundColor = "#1a1a1a";
       localStorage.setItem("theme", "dark");
-    } else {
+    } else if (mode === "dark") {
       setmode("light");
-      bodybg.style.backgroundColor = "#fafafa";
-      bodybg.style.color = "#000";
+
       localStorage.setItem("theme", "light");
     }
   };
 
   const theme = createTheme({
     palette: {
-      mode: mode === "light" ? "light" : "dark",
+      mode: mode,
     },
   });
 
-  useEffect(() => {}, []);
-
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
         <Routes>
           <Route
